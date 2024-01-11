@@ -1,3 +1,5 @@
+# sudo nix run github:nix-community/disko -- --mode zap_create_mount ./disko-luks-ext4.nix
+
 {
  disko.devices = {
   disk = {
