@@ -1,6 +1,5 @@
-layout using nix:
-
 {
+ disko.devices = {
   disk = {
     nvme = {
       type = "disk";
@@ -10,7 +9,6 @@ layout using nix:
         format = "gpt";
         partitions = [
           {
-            type = "partition";
             name = "ESP";
             start = "1MiB";
             end = "512MiB";
@@ -19,13 +17,12 @@ layout using nix:
               type = "filesystem";
               format = "vfat";
               mountpoint = "/boot";
-              options = [
+              mountOptions = [
                 "defaults"
               ];
             };
           }
           {
-            type = "partition";
             name = "luks";
             start = "512MiB";
             end = "100%";
@@ -33,12 +30,10 @@ layout using nix:
               type = "luks";
               name = "crypted-root";
               content = {
-                type = "ext4";
+                type = "filesystem";
+		format = "ext4";
                 mountpoint = "/";
                 mountOptions = ["noatime"];
-                subvolumes = {
-                  "/home" = {};
-                };
               };
             };
           }
@@ -46,4 +41,5 @@ layout using nix:
       };
     };
   };
+ };
 }
