@@ -3,7 +3,7 @@
     disk = {
       a = {
         type = "disk";
-        device = "/dev/sda";
+	device = "/dev/sda";
         content = {
           type = "gpt";
           partitions = {
@@ -12,7 +12,7 @@
               type = "EF02"; # for grub MBR
             };
             ESP = {
-              size = "64M";
+              size = "1G";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -32,7 +32,7 @@
       };
       b = {
         type = "disk";
-        device = "/dev/sdb";
+	device = "/dev/sdb";
         content = {
           type = "gpt";
           partitions = {
@@ -41,7 +41,7 @@
               type = "EF02"; # for grub MBR
             };
             ESP = {
-              size = "64M";
+              size = "1G";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -68,14 +68,18 @@
           compression = "zstd";
           "com.sun:auto-snapshot" = "false";
         };
-        mountpoint = "/";
-        postCreateHook = "zfs snapshot zroot@blank";
 
         datasets = {
+          root = {
+            type = "zfs_fs";
+            options.mountpoint = "legacy";
+            mountpoint = "/";
+            options."com.sun:auto-snapshot" = "false";
+          };
           tank = {
             type = "zfs_fs";
+	    options.mountpoint = "legacy";
             mountpoint = "/tank";
-            options."com.sun:auto-snapshot" = "false";
           };
         };
       };
